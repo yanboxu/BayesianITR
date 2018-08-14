@@ -550,6 +550,8 @@ model_fit <- function(model = 'ITR', tol_iter, thin, mh_sd,
     
     param_list = c(param_list, list("C_u" = C_u, "Mu_b" = Mu_b, "mu_log_sd2_u" = mu_log_sd2_u, "mu_logit_rho_u" = mu_logit_rho_u, "C_f" = C_f, "u1_f" = u1_f, "u2_f" = u2_f, "u3_f" = u3_f, "ur_f" = ur_f, "ub_f" = ub_f, "M1" = M1, "M2" = M2))
   }
+  
+  
   ##### Sampling ####
   if(model == 'ITR'){
     modelFit = sampling_ind_C(input_vars,
