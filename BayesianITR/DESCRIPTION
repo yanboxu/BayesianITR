@@ -6,7 +6,7 @@ Date: 2018-08-10
 Author: Yanbo Xu
 Maintainer: Yanbo Xu <asnoppy@gmail.com>
 Description: ITR is a Bayesian approach that obtains Bayesian estimators of continous treatment effects, called Treatment Response Curves, from longitudinal observational data. It estimates heterogeneous treatment effects on both subgroup level and individual level with creadibility intervals.
-License: GPL (>= 2)
+License: MIT
 Encoding: UTF-8
 Imports: Rcpp (>= 0.12.14)
 LinkingTo: Rcpp, RcppArmadillo
