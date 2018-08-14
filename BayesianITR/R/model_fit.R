@@ -118,115 +118,115 @@ model_fit <- function(model = 'ITR', tol_iter, thin, mh_sd,
   print(paste('Fitting',model,'....'))
   
   #### Global variables ####
-  tol_iter <<- tol_iter
-  mh_sd <<- mh_sd
-  K_u <<- K_u
-  K_f <<- K_f
-  prior_mu_log_sd2_u0 <<- prior_mu_log_sd2_u0
-  prior_sigma_log_sd2_u0 <<- prior_sigma_log_sd2_u0
-  prior_sd1_f <<- prior_sd1_f
-  prior_u10_f <<- prior_u10_f
-  prior_sd10_f <<- prior_sd10_f
-  prior_sdr_f <<- prior_sdr_f
-  prior_ur0_f <<- prior_ur0_f
-  prior_sdr0_f <<- prior_sdr0_f
-  prior_ub0_f <<- prior_ub0_f
-  prior_mu_log_sd2_f0 <<- prior_mu_log_sd2_f0
-  prior_sigma_log_sd2_f0 <<- prior_sigma_log_sd2_f0
-  prior_unit <<- prior_unit
-  model_fit <<- model_fit
-  last_iter <<- last_iter
+  tol_iter <- tol_iter
+  mh_sd <- mh_sd
+  K_u <- K_u
+  K_f <- K_f
+  prior_mu_log_sd2_u0 <- prior_mu_log_sd2_u0
+  prior_sigma_log_sd2_u0 <- prior_sigma_log_sd2_u0
+  prior_sd1_f <- prior_sd1_f
+  prior_u10_f <- prior_u10_f
+  prior_sd10_f <- prior_sd10_f
+  prior_sdr_f <- prior_sdr_f
+  prior_ur0_f <- prior_ur0_f
+  prior_sdr0_f <- prior_sdr0_f
+  prior_ub0_f <- prior_ub0_f
+  prior_mu_log_sd2_f0 <- prior_mu_log_sd2_f0
+  prior_sigma_log_sd2_f0 <- prior_sigma_log_sd2_f0
+  prior_unit <- prior_unit
+  model_fit <- model_fit
+  last_iter <- last_iter
   
   ## Load data ##
-  dimJ <<- data$data_J; # maximum data points for each patient
-  dimI <<- data$data_I # number of patients
-  dimL <<- data$data_L # maximum treatment time points for each patient
-  dimD <<- data$data_D # teatment level
-  dimP <<- data$data_P; # dimension of fixed effect
+  dimJ <- data$data_J; # maximum data points for each patient
+  dimI <- data$data_I # number of patients
+  dimL <- data$data_L # maximum treatment time points for each patient
+  dimD <- data$data_D # teatment level
+  dimP <- data$data_P; # dimension of fixed effect
 
-  dataZ <<- data$data_Z; # joint outcomes IxJ
-  dataT <<- data$data_T; # hospital time IxJ
-  dataB <<- data$data_B; # basic variables IxJxP
-  dataTau <<- data$data_Tau # treatment time IxL
-  dataA <<- data$data_A # treatments IxL
-  #dataIU <<- data.IU # baseline regimes
-  J_I <<- data$data_J_I; # data points per patient
-  L_I <<- data$data_L_I; # treatment points per patient
+  dataZ <- data$data_Z; # joint outcomes IxJ
+  dataT <- data$data_T; # hospital time IxJ
+  dataB <- data$data_B; # basic variables IxJxP
+  dataTau <- data$data_Tau # treatment time IxL
+  dataA <- data$data_A # treatments IxL
+  #dataIU <- data.IU # baseline regimes
+  J_I <- data$data_J_I; # data points per patient
+  L_I <- data$data_L_I; # treatment points per patient
 
   dataIU = array(1, dim = c(dimI, dimJ));
   
   ######### Base Prior Initialization ##########
-  prior_prob_sd2 <<- 4; # Default sd if not secified for base priors
+  prior_prob_sd2 <- 4; # Default sd if not secified for base priors
   
   # params in Normal(or NIW if DPM/DP) prior on Beta
-  beta0 <<- rep(0,dimP);
-  S0 <<- diag(1,dimP);
+  beta0 <- rep(0,dimP);
+  S0 <- diag(1,dimP);
   
   # params in transformed Normal priors for U Gaussian process kernel params  
-  mu_log_sd2_u0 <<- log(1)
+  mu_log_sd2_u0 <- log(1)
   if(!is.null(prior_mu_log_sd2_u0))
-    mu_log_sd2_u0 <<- prior_mu_log_sd2_u0
-  sigma_log_sd2_u0 <<- prior_prob_sd2
+    mu_log_sd2_u0 <- prior_mu_log_sd2_u0
+  sigma_log_sd2_u0 <- prior_prob_sd2
   if(!is.null(prior_sigma_log_sd2_u0))
-    sigma_log_sd2_u0 <<- prior_sigma_log_sd2_u0
+    sigma_log_sd2_u0 <- prior_sigma_log_sd2_u0
   
-  mu_logit_rho_u0 <<- logit(0.5); # rho_u ~ 0.5
-  sigma_logit_rho_u0 <<- prior_prob_sd2;
+  mu_logit_rho_u0 <- logit(0.5); # rho_u ~ 0.5
+  sigma_logit_rho_u0 <- prior_prob_sd2;
   
   # params in transformed Normal priors for Treatment response curves params
-  u10_f <<- rep(0,dimD);
-  sd10_f <<- 1;
+  u10_f <- rep(0,dimD);
+  sd10_f <- 1;
   if(!is.null(prior_u10_f))
-    u10_f <<- prior_u10_f
+    u10_f <- prior_u10_f
   if(!is.null(prior_sd10_f))
-    sd10_f <<- prior_sd10_f;
+    sd10_f <- prior_sd10_f;
 
-  u20_f <<- rep(logit(0.5),dimD);
-  sd20_f <<- prior_prob_sd2;
+  u20_f <- rep(logit(0.5),dimD);
+  sd20_f <- prior_prob_sd2;
   
-  u30_f <<- rep(logit(0.5),dimD);
-  sd30_f <<- prior_prob_sd2;
+  u30_f <- rep(logit(0.5),dimD);
+  sd30_f <- prior_prob_sd2;
 
-  ur0_f <<- rep(5,dimD);
-  sdr0_f <<- 10;
+  ur0_f <- rep(5,dimD);
+  sdr0_f <- 10;
   if(!is.null(prior_ur0_f))
-    ur0_f <<- prior_ur0_f
+    ur0_f <- prior_ur0_f
   if(!is.null(prior_sdr0_f))
-    sdr0_f <<- prior_sdr0_f;
+    sdr0_f <- prior_sdr0_f;
   
-  ub0_f <<- rep(logit(0.2),dimD);
-  sdb0_f <<- prior_prob_sd2;
+  ub0_f <- rep(logit(0.2),dimD);
+  sdb0_f <- prior_prob_sd2;
   if(!is.null(prior_ub0_f))
-    ub0_f <<- prior_ub0_f
+    ub0_f <- prior_ub0_f
   
   # params in transformed Normal priors for treatment response Gaussian process noises
-  mu_log_sd2_f0 <<- log(0.01);
-  sigma_log_sd2_f0 <<- prior_prob_sd2;
+  mu_log_sd2_f0 <- log(0.01);
+  sigma_log_sd2_f0 <- prior_prob_sd2;
   if(!is.null(prior_mu_log_sd2_f0))
-    mu_log_sd2_f0 <<- prior_mu_log_sd2_f0;
+    mu_log_sd2_f0 <- prior_mu_log_sd2_f0;
   if(!is.null(prior_sigma_log_sd2_f0))
-    sigma_log_sd2_f0 <<- prior_sigma_log_sd2_f0;
+    sigma_log_sd2_f0 <- prior_sigma_log_sd2_f0;
   
-  mu_logit_rho_f0 <<- logit(0.9); # rho_u ~ 0.5
-  sigma_logit_rho_f0 <<- prior_prob_sd2;
+  mu_logit_rho_f0 <- logit(0.9); # rho_u ~ 0.5
+  sigma_logit_rho_f0 <- prior_prob_sd2;
   
   # IG params for Sigma_e[i]
-  a_e <<- rep(1,dimI);
-  b_e <<- rep(1,dimI);
+  a_e <- rep(1,dimI);
+  b_e <- rep(1,dimI);
   
 
   ######### Indivdiual-level Parameters Initialization ##########
-  Beta <<- array(0,dim=c(dimI,dimP));
-  sigma2_u <<- rep(0,dimI);
-  rho_u <<- rep(0,dimI);
-  U <<- array(-1,dim=c(dimI,dimJ));
+  Beta <- array(0,dim=c(dimI,dimP));
+  sigma2_u <- rep(0,dimI);
+  rho_u <- rep(0,dimI);
+  U <- array(-1,dim=c(dimI,dimJ));
   
-  a1 <<- array(0,dim=c(dimI,dimD));
-  a2 <<- array(0,dim=c(dimI,dimD));
-  a3 <<- array(0,dim=c(dimI,dimD));
-  r <<- array(0,dim=c(dimI,dimD));
-  b <<- array(0,dim=c(dimI,dimD));
-  f <<- array(0,dim=c(dimI,dimJ));
+  a1 <- array(0,dim=c(dimI,dimD));
+  a2 <- array(0,dim=c(dimI,dimD));
+  a3 <- array(0,dim=c(dimI,dimD));
+  r <- array(0,dim=c(dimI,dimD));
+  b <- array(0,dim=c(dimI,dimD));
+  f <- array(0,dim=c(dimI,dimJ));
   
   for(i in 1:dimI){
     U[i,1:J_I[i]] = mvrnorm(1,rep(0,J_I[i]),diag(sigma2_u[i],J_I[i]));
@@ -246,31 +246,31 @@ model_fit <- function(model = 'ITR', tol_iter, thin, mh_sd,
   }
   
   ######### Noise Initialization ##########
-  sigma2_f <<- exp(rnorm(dimD, mu_log_sd2_f0, sqrt(sigma_log_sd2_f0)))
-  rho_f <<- invlogit(rnorm(dimD, mu_logit_rho_f0, sqrt(sigma_logit_rho_f0)))
+  sigma2_f <- exp(rnorm(dimD, mu_log_sd2_f0, sqrt(sigma_log_sd2_f0)))
+  rho_f <- invlogit(rnorm(dimD, mu_logit_rho_f0, sqrt(sigma_logit_rho_f0)))
   
-  Sigma_e_I <<- rep(0,dimI);
+  Sigma_e_I <- rep(0,dimI);
   for(i in 1:dimI)
-    Sigma_e_I[i] <<- rinvgamma(1,a_e[i],b_e[i])
+    Sigma_e_I[i] <- rinvgamma(1,a_e[i],b_e[i])
   
   ############################ Read params from existing model_fit #######################
   if(!is.null(model_fit)){
-    Sigma_e_I <<- model_fit$Sigma_e[last_iter,];
+    Sigma_e_I <- model_fit$Sigma_e[last_iter,];
     
-    a1 <<- model_fit$a1[last_iter,,];
-    a2 <<- model_fit$a2[last_iter,,];
-    a3 <<- model_fit$a3[last_iter,,];
-    r <<- model_fit$r[last_iter,,];
-    b <<- model_fit$b[last_iter,,];
+    a1 <- model_fit$a1[last_iter,,];
+    a2 <- model_fit$a2[last_iter,,];
+    a3 <- model_fit$a3[last_iter,,];
+    r <- model_fit$r[last_iter,,];
+    b <- model_fit$b[last_iter,,];
     
-    rho_f <<- model_fit$rho_f[last_iter,];
-    sigma2_f <<- model_fit$sigma2_f[last_iter,];
-    f <<- model_fit$f[last_iter,,];
+    rho_f <- model_fit$rho_f[last_iter,];
+    sigma2_f <- model_fit$sigma2_f[last_iter,];
+    f <- model_fit$f[last_iter,,];
     
-    Beta <<- model_fit$Beta[last_iter,,];
-    sigma2_u <<- model_fit$sigma2_u[last_iter,];
-    rho_u <<- model_fit$rho_u[last_iter,];
-    U <<- model_fit$U[last_iter,,];
+    Beta <- model_fit$Beta[last_iter,,];
+    sigma2_u <- model_fit$sigma2_u[last_iter,];
+    rho_u <- model_fit$rho_u[last_iter,];
+    U <- model_fit$U[last_iter,,];
 
   }
 
@@ -320,56 +320,56 @@ model_fit <- function(model = 'ITR', tol_iter, thin, mh_sd,
       return()
     }
     
-    K <<- max(K_f)
+    K <- max(K_f)
     
     ########## Subgroup-level Prior Initialization #########
-    prior_cluster_sd2 <<- 0.09; # default sd within clusters
-    prior_a1_cluster_sd2 <<- 0.01; # sd for alpha_1 within clusters
+    prior_cluster_sd2 <- 0.09; # default sd within clusters
+    prior_a1_cluster_sd2 <- 0.01; # sd for alpha_1 within clusters
     
     # NIW extra params for Mu_b, Sigma_b
-    k0 <<- 1;
-    v0 <<- dimP+1;
+    k0 <- 1;
+    v0 <- dimP+1;
     
     # params in subgroup-level Normal priors for U Gaussian process kernel params 
-    sigma_log_sd2_u <<- prior_cluster_sd2;
-    sigma_logit_rho_u <<- prior_cluster_sd2;
+    sigma_log_sd2_u <- prior_cluster_sd2;
+    sigma_logit_rho_u <- prior_cluster_sd2;
     
     # params in subgroup-level Normal priors for Treatment response curves params
-    sd1_f <<- prior_a1_cluster_sd2;
+    sd1_f <- prior_a1_cluster_sd2;
     if(!is.null(prior_sd1_f))
-      sd1_f <<- prior_sd1_f;
+      sd1_f <- prior_sd1_f;
     
-    sd2_f <<- prior_cluster_sd2;
-    sd3_f <<- prior_cluster_sd2;
+    sd2_f <- prior_cluster_sd2;
+    sd3_f <- prior_cluster_sd2;
     
-    sdr_f <<- prior_cluster_sd2;
+    sdr_f <- prior_cluster_sd2;
     if(!is.null(prior_sdr_f))
-      sdr_f <<- prior_sdr_f
+      sdr_f <- prior_sdr_f
     
-    sdb_f <<- prior_cluster_sd2;
+    sdb_f <- prior_cluster_sd2;
     
     # DPM parameter M for clustering
-    M_c <<- 2;
-    M_d <<- 2;
+    M_c <- 2;
+    M_d <- 2;
     
     ################## Subgroup-level Parameter initialization ##################
     # C_u[i], cluster indicator for U[i]
-    C_u <<- sample(1:K_u,dimI,replace = TRUE);
+    C_u <- sample(1:K_u,dimI,replace = TRUE);
     
     # mu_b[k], Sigma_b[k], hyperparameters for kth cluster for Beta
-    Mu_b <<- array(0,dim=c(K_u,dimP));
-    Sigma_b <<- array(0,dim=c(K_u,dimP,dimP));
+    Mu_b <- array(0,dim=c(K_u,dimP));
+    Sigma_b <- array(0,dim=c(K_u,dimP,dimP));
     for(k in 1:K_u)
-      Sigma_b[k,,] <<- diag(0.09,dimP); #xxxxxxxxxxxxxxxxxxx 0.2
+      Sigma_b[k,,] <- diag(0.09,dimP); #xxxxxxxxxxxxxxxxxxx 0.2
     
     # u{1-3},r_f
     # C_f[i] cluster indicator for f
-    u1_f <<- array(0,dim=c(K,dimD));
-    u2_f <<- array(0,dim=c(K,dimD));
-    u3_f <<- array(0,dim=c(K,dimD));
-    ur_f <<- array(0,dim=c(K,dimD));
-    ub_f <<- array(0,dim=c(K,dimD));
-    C_f <<- array(0,dim=c(dimI,dimD))
+    u1_f <- array(0,dim=c(K,dimD));
+    u2_f <- array(0,dim=c(K,dimD));
+    u3_f <- array(0,dim=c(K,dimD));
+    ur_f <- array(0,dim=c(K,dimD));
+    ub_f <- array(0,dim=c(K,dimD));
+    C_f <- array(0,dim=c(dimI,dimD))
     for(d in 1:dimD){
       u1_f[1:K_f[d],d] = rnorm(K_f[d],u10_f[d],sqrt(sd10_f));
       u2_f[1:K_f[d],d] = rnorm(K_f[d],u20_f[d],sqrt(sd20_f));
@@ -380,12 +380,12 @@ model_fit <- function(model = 'ITR', tol_iter, thin, mh_sd,
     }
     
     # mu_log_sd2_u[k], mu_logit_rho_u[k], hyperparameters for kth cluster of sigma2_u, rho_u
-    mu_log_sd2_u <<- rnorm(K_u,mu_log_sd2_u0,sqrt(sigma_log_sd2_u0));
-    mu_logit_rho_u <<- rnorm(K_u,mu_logit_rho_u0,sqrt(sigma_logit_rho_u0));
+    mu_log_sd2_u <- rnorm(K_u,mu_log_sd2_u0,sqrt(sigma_log_sd2_u0));
+    mu_logit_rho_u <- rnorm(K_u,mu_logit_rho_u0,sqrt(sigma_logit_rho_u0));
     
     # M1, M2
-    M1 <<- rgamma(1, M_c, M_d);
-    M2 <<- rgamma(dimD, M_c, M_d);
+    M1 <- rgamma(1, M_c, M_d);
+    M2 <- rgamma(dimD, M_c, M_d);
     
     ######### Indivdiual-level Parameters Initialization ##########
     for(i in 1:dimI){
@@ -458,27 +458,27 @@ model_fit <- function(model = 'ITR', tol_iter, thin, mh_sd,
       return()
     }
     
-    K <<- max(K_f)
+    K <- max(K_f)
     
     ################## Subgroup-level Parameter initialization ##################
     # DPM parameter M for clustering
-    M_c <<- 2;
-    M_d <<- 2;
+    M_c <- 2;
+    M_d <- 2;
     
     # C_u[i], cluster indicator for U[i]
-    C_u <<- sample(1:K_u,dimI,replace = TRUE);
+    C_u <- sample(1:K_u,dimI,replace = TRUE);
     
     # mu_b[k], Sigma_b[k], hyperparameters for kth cluster for Beta
-    Mu_b <<- array(0,dim=c(K_u,dimP));
+    Mu_b <- array(0,dim=c(K_u,dimP));
    
     # u{1-3},r_f
     # C_f[i] cluster indicator for f
-    u1_f <<- array(0,dim=c(K,dimD));
-    u2_f <<- array(0,dim=c(K,dimD));
-    u3_f <<- array(0,dim=c(K,dimD));
-    ur_f <<- array(0,dim=c(K,dimD));
-    ub_f <<- array(0,dim=c(K,dimD));
-    C_f <<- array(0,dim=c(dimI,dimD))
+    u1_f <- array(0,dim=c(K,dimD));
+    u2_f <- array(0,dim=c(K,dimD));
+    u3_f <- array(0,dim=c(K,dimD));
+    ur_f <- array(0,dim=c(K,dimD));
+    ub_f <- array(0,dim=c(K,dimD));
+    C_f <- array(0,dim=c(dimI,dimD))
     for(d in 1:dimD){
       u1_f[1:K_f[d],d] = rnorm(K_f[d],u10_f[d],sqrt(sd10_f));
       u2_f[1:K_f[d],d] = rnorm(K_f[d],u20_f[d],sqrt(sd20_f));
@@ -489,12 +489,12 @@ model_fit <- function(model = 'ITR', tol_iter, thin, mh_sd,
     }
     
     # mu_log_sd2_u[k], mu_logit_rho_u[k], hyperparameters for kth cluster of sigma2_u, rho_u
-    mu_log_sd2_u <<- rnorm(K_u,mu_log_sd2_u0,sqrt(sigma_log_sd2_u0));
-    mu_logit_rho_u <<- rnorm(K_u,mu_logit_rho_u0,sqrt(sigma_logit_rho_u0));
+    mu_log_sd2_u <- rnorm(K_u,mu_log_sd2_u0,sqrt(sigma_log_sd2_u0));
+    mu_logit_rho_u <- rnorm(K_u,mu_logit_rho_u0,sqrt(sigma_logit_rho_u0));
     
     # M1, M2
-    M1 <<- rgamma(1, M_c, M_d);
-    M2 <<- rgamma(dimD, M_c, M_d);
+    M1 <- rgamma(1, M_c, M_d);
+    M2 <- rgamma(dimD, M_c, M_d);
     
     ######### Indivdiual-level Parameters Initialization ##########
     for(i in 1:dimI){
